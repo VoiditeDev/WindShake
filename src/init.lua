@@ -36,6 +36,7 @@ local WindShake = {
 	RenderDistance = 150,
 	MaxRefreshRate = 1 / 60,
 	SharedSettings = Settings.new(script),
+	Enabled = false
 
 	ObjectMetadata = {},
 	VectorMap = VectorMap.new(),
@@ -250,6 +251,7 @@ function WindShake:Pause()
 		self.UpdateConnection = nil
 	end
 
+	self.Enabled = false
 	self.Active = 0
 	self.Running = false
 
@@ -261,6 +263,12 @@ function WindShake:Resume()
 		return
 	else
 		self.Running = true
+	end
+
+	if self.Enabled then
+		return
+	else
+		self.Enabled = true
 	end
 
 	-- Connect updater
@@ -294,6 +302,7 @@ function WindShake:Init(config: { MatchWorkspaceWind: boolean? })
 	-- Clear any old stuff.
 	self:Cleanup()
 	self.Initialized = true
+	self.Enabled = true
 
 	-- Wire up tag listeners.
 	local windShakeAdded = CollectionService:GetInstanceAddedSignal(COLLECTION_TAG)
